@@ -1,9 +1,7 @@
 from airflow.sdk import dag, task
 from datetime import datetime
 from pathlib import Path
-
-import pandas as pd
-import numpy as np
+from airflow.providers.databricks.operators.databricks import DatabricksRunNowOperator
 
 README = Path(__file__).with_name("dag.md").read_text(encoding="utf-8")
 
@@ -16,35 +14,11 @@ README = Path(__file__).with_name("dag.md").read_text(encoding="utf-8")
 )
 def aeroportos_pipeline_silver():
 
-    @task()
-    def normaliza_nome_colunas():
-        df = pd.read_parquet('/opt/airflow/data/raw/aeroportos.parquet')
+    executar_spark = DatabricksRunNowOperator(
+        task_id="silver_aeroportos",
+        job_id="852837312735464",
+    )
 
-        df = df[['ident', 'type', 'name', 'country_name', 'local_region', 'municipality']].rename(columns={
-            'ident': 'icao_id',
-            'type': 'categoria', 
-            'name': 'aeroporto', 
-            'country_name': 'pais', 
-            'local_region': 'estado', 
-            'municipality': 'cidade'
-        })
-
-        df.to_parquet('/opt/airflow/data/tmp/aeroportos_silver_transicao.parquet')
-
-    @task()
-    def trata_valores_categoria():
-        df = pd.read_parquet('/opt/airflow/data/tmp/aeroportos_silver_transicao.parquet')
-
-        df['categoria'] = df['categoria'].replace({
-            'small_airport': 'pequeno',
-            'medium_airport': 'médio',
-            'large_airport': 'grande',
-            'heliport': 'heliponto',
-            'closed': 'fechado'
-        })
-
-        df.to_parquet('/opt/airflow/data/processed/aeroportos.parquet')
-
-    normaliza_nome_colunas() >> trata_valores_categoria()
+    executar_spark
 
 aeroportos_pipeline_silver()

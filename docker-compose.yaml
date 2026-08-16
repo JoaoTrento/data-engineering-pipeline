@@ -32,6 +32,7 @@ services:
       AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
       AIRFLOW__API_AUTH__JWT_SECRET: minha-chave-super-secreta-airflow
       PYTHONPATH: /opt/airflow
+      AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW__CORE__FERNET_KEY}
 
     volumes:
       - ./dags:/opt/airflow/dags
@@ -73,6 +74,9 @@ services:
       AIRFLOW__CORE__EXECUTION_API_SERVER_URL: http://airflow-api-server:8080/execution/
       AIRFLOW__API_AUTH__JWT_SECRET: minha-chave-super-secreta-airflow
       PYTHONPATH: /opt/airflow
+      DATABRICKS_HOST: ${DATABRICKS_HOST}
+      DATABRICKS_TOKEN: ${DATABRICKS_TOKEN}
+      AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW__CORE__FERNET_KEY}
 
     command: api-server
 
@@ -119,6 +123,9 @@ services:
       AIRFLOW__CORE__EXECUTION_API_SERVER_URL: http://airflow-api-server:8080/execution/
       AIRFLOW__API_AUTH__JWT_SECRET: minha-chave-super-secreta-airflow
       PYTHONPATH: /opt/airflow
+      DATABRICKS_HOST: ${DATABRICKS_HOST}
+      DATABRICKS_TOKEN: ${DATABRICKS_TOKEN}
+      AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW__CORE__FERNET_KEY}
 
     command: scheduler
 
@@ -151,6 +158,9 @@ services:
       AIRFLOW__CORE__EXECUTION_API_SERVER_URL: http://airflow-api-server:8080/execution/
       AIRFLOW__API_AUTH__JWT_SECRET: minha-chave-super-secreta-airflow
       PYTHONPATH: /opt/airflow
+      DATABRICKS_HOST: ${DATABRICKS_HOST}
+      DATABRICKS_TOKEN: ${DATABRICKS_TOKEN}
+      AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW__CORE__FERNET_KEY}
 
     command: dag-processor
 
