@@ -1,0 +1,6 @@
+apache-airflow-providers-fab
+pandas
+numpy
+requests
+pyarrow
+openpyxl
